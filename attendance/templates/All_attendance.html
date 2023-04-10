@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>Admin-interface</title>
+  <style>
+    .row {
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .box {
+      width: 200px;
+      height: 100px;
+      background: rgb(250, 72, 0);
+      margin: 20px;
+    }
+
+    .col {
+      display: flex;
+      align-items: flex-start;
+      justify-content: start;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <div class="col-2 mt-5" style="background: whitesmoke;">
+      <div style="text-align: center;"><a href="{% url 'admin-sinterface' %}"><button
+            style="background-color:rgb(219, 205, 213);">Back</button> </a> </div>
+    </div>
+    <div class="col" style="background: powderblue;">
+      <div class="container">
+        {% comment %} <div style="text-align: center;"><a href="{% url 'All-Attendance' %}"></a></div> {% endcomment %}
+        <div class="container">
+
+          <div class="boxContainer">
+            <table class="elementContainer">
+              <tr>
+                <td>
+                  <form action="" method="get" style="display:flex; margin-top: 7px;">
+                    <div style="text-align: center;">
+                      <input type="date"  name="date" id="search" placeholder="date" style="padding: 6px;">
+                    </div>
+                      <div class="mb-3" style="padding: 1px; margin-top: -1PX;">
+
+                        <select id="disabledSelect" name="status" class="form-select" >
+                          <option disabledSelect>select</option>
+                          <option>Present</option>
+                          <option>Absent</option>
+                        </select>
+                      </div>
+                      <a href="{% url 'All-Attendance' %}"><button onclick="prevent()" style="background-color:success; padding: 4px;">search</button>
+                      </a>
+                  </form>
+                </td>
+                <td>
+                  <a href="#"><i class="material-icons"></i></a>
+
+                </td>
+              </tr>
+
+            </table>
+            <table class="table" id="table">
+              <thead>
+                <tr>
+                  <th scope="col"> date</th>
+                  <th scope="col"> User-Name</th>
+                  <th scope="col"> Login-Time</th>
+                  <th scope="col"> Logout-Time</th>
+                  <th scope="col"> status</th>
+                  <th scope="col"> Working hours</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                {% for i in page_obj.object_list %}
+                <tr>
+                  <td scope="row">{{i.date|date:'Y-m-d'}}</td>
+                  <td>{{i.user_id}}</td>
+                  <td>{{i.login_time}}</td>
+                  <td>{{i.logout_time}}</td>
+                  <td>{{i.status}}</td>
+                  <td>{{i.working_hour|time:"H:i:s"}}</td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+
+              <tbody>
+
+                {% for i in filter_date %}
+               
+                <tr>
+                  <td scope="row">{{i.date|date:'Y-m-d'}}</td>
+                  <td>{{i.user_id}}</td>
+                  <td>{{i.login_time}}</td>
+                  <td>{{i.logout_time}}</td>
+                  <td>{{i.status}}</td>
+                  <td>{{i.working_hour|time:"H:i:s"}}</td>
+                </tr>
+
+              
+                {% endfor %}
+              </tbody>
+              <tbody>
+
+                {% for i in filter_ds %}
+               
+                <tr>
+                  <td scope="row">{{i.date|date:'Y-m-d'}}</td>
+                  <td>{{i.user_id}}</td>
+                  <td>{{i.login_time}}</td>
+                  <td>{{i.logout_time}}</td>
+                  <td>{{i.status}}</td>
+                  <td>{{i.working_hour|time:"H:i:s"}}</td>
+                </tr>
+
+              
+                {% endfor %}
+              </tbody>
+              <tbody>
+
+                {% for i in sta %}
+               
+                <tr>
+                  <td scope="row">{{i.date|date:'Y-m-d'}}</td>
+                  <td>{{i.user_id}}</td>
+                  <td>{{i.login_time}}</td>
+                  <td>{{i.logout_time}}</td>
+                  <td>{{i.status}}</td>
+                  <td>{{i.working_hour|time:"H:i:s"}}</td>
+                </tr>
+
+              
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <center>
+            {%if page_obj.has_previous %}
+            <a href="?page={{page_obj.previous_page_number}}">&laquo; Previous</a>
+            {% endif %}
+
+            <span>{{page_obj.number}}</span>
+
+            {%if page_obj.has_next %}
+            <a href="?page={{page_obj.next_page_number}}">Next &raquo;</a>
+            {% endif %}
+          </center>
+        </div>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous"></script>
+        <script>
+
+          {% comment %} var searchBox = document.getElementById("search")
+          searchBox.addEventListener("keyup", function () {
+            var keyword = this.value;+
+            keyword = keyword.toUpperCase();
+            var table = document.getElementById("table");
+            var all_tr = table.getElementsByTagName("tr");
+            console.log("Hello")
+            for (var i = 0; i < all_tr.length; i++) {
+              var all_columns = all_tr[i].getElementsByTagName("td");
+              for (j = 0; j < all_columns.length; j++) {
+                if (all_columns[j]) {
+                  var column_value = all_columns[j].textContent || all_columns[j].innerText;
+                  column_value = column_value.toUpperCase();
+                  if (column_value.indexOf(keyword) > -1) {
+                    all_tr[i].style.display = ""; // show
+                    break;
+                  } else {
+                    all_tr[i].style.display = "none"; // hide
+                  }
+                }
+              }
+            }
+          }) {% endcomment %}
+          function prevent(){
+            console.log(document.getElementByTagname('input'))
+          }    
+        </script>
+      </div>
+</body>
+
+</html>

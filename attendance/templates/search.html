@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Admin-interface</title>
+    <style>
+        .row{
+            height: 100vh;
+            width: 100vw;
+        }
+        .box{
+            width: 105px;
+            height: 50px;
+            background: white;
+            margin: 20px;
+            position: relative;
+            -webkit-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);
+            box-shadow: 8px 10px 5px 0px rgba(0,0,0,0.75);  
+            border-radius: 5px;
+        }
+        .col{
+            display: flex;
+            align-items: flex-start;
+            justify-content: start;
+            flex-wrap: wrap;
+        }
+        .pstatus{
+            width: 20px;
+            height: 20px;
+            background: green;
+            border-radius: 50%;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+
+        }
+        .astatus{
+            width: 20px;
+            height: 20px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+
+        }
+    </style>
+  </head>
+  <body>
+    
+      <div class="row">
+          <div class="col-2" style="background: whitesmoke;">
+              <div style="text-align: center;"><a  href="{% url 'admin-sinterface' %}" ><button style="background-color:rgb(219, 205, 213);">Back</button> </a> </div>
+             
+              
+            </div>
+            <div class="col" style="background: powderblue;">
+        <div class="container">
+    
+            <div class="boxContainer">
+              <table class="elementContainer">
+                <tr>
+                  
+                  <td>
+                    <a href="#"><i class="material-icons"></i></a>
+                   
+                  </td>
+                </tr>
+    
+              </table>
+    
+            </div>
+        <div>
+        {% for i in student %}
+       
+        <div class="box" id="box">
+            <div style="text-align: center;"><a href="{% url 'user-week' i.id %}" style="text-decoration: none;">{{i.username}}</a> </div>
+        </div>
+        {% endfor %}
+       
+    </div>
+   </div>
+   
+
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+</html>

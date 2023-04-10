@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+      *{
+        outline: none;
+        border: none;
+      }
+      body{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: powderblue;
+        position: relative;
+      }
+      .card{
+        width: 300px;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+        background-color: rgba(240, 239, 239, 0.4);
+        border-radius: 5px;
+        -webkit-box-shadow:0px 0px 3px 0px rgba(0,0,0,0.05);
+-moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.05);
+box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.05);
+      }
+      input{
+        border-radius: 5px;
+        width: 98%;
+        line-height: 30px;
+        font-size: 16px;
+        
+      }
+      form{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .inputfileds{
+        width: 90%;
+      }
+      .btn{
+        margin-top: 10px;
+        width: 50%;
+        line-height: 25px;
+        background: greenyellow;
+      }
+      .sign_btn{
+        background: greenyellow;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 100px;
+        line-height: 30px;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+    <h3>Signup</h3>
+    <form action="/signup" method="post">
+      {% csrf_token %}
+      <div class="inputfileds">
+        <label for="">Username</label>
+        <input type="text" name="username" id="username" placeholder="Create a username" Required />
+      </div>
+
+      <div class="inputfileds">
+        <label for="">Firstname</label>
+        <input type="text" name="firstname" id="firstname" placeholder="Create a firstname" Required />
+      </div>
+
+      <div class="inputfileds">
+        <label for="">Lastname</label>
+        <input type="text" name="lastname" id="lastname" placeholder="Create a lastname" Required />
+      </div>
+
+      <div class="inputfileds">
+        <label for="">Email Address</label>
+        <input type="email" name="email" id="email" placeholder="Enter your email" Required />
+      </div>
+    
+      <div class="inputfileds">
+        <label for="">Password</label>
+        <input type="password" name="pass1" id="pass1" placeholder="Enter your password here" Required />
+      </div>
+    
+      <div class="inputfileds">
+        <label for="">Confirm password</label>
+        <input type="password" name="pass2" id="pass2" placeholder="Re-enter password" Required />
+      </div>
+
+      <button type="submit" class="btn">Submit</button>
+    </form>
+  </div>
+    <button type="submit" class="sign_btn"><a href="/signin" style="list-style: none;">SignIn</a></button>
+  </body>
+</html>

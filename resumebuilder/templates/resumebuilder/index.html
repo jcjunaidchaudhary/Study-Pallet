@@ -1,0 +1,1053 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>ResumeBuilder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: powderblue;
+            overflow-x: hidden;
+        }
+
+        section {
+            border-radius: 15px;
+            background-color: whitesmoke;
+            margin: 10px 10%;
+            position: relative;
+        }
+
+        .section1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 10%;
+            position: relative;
+        }
+
+        .coverpage {
+            border-radius: 10px 10px 0px 0px;
+            background-color: grey;
+            height: 144px;
+            width: 100%;
+            position: relative;
+        }
+
+        .camera {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background-image: url('https://tse2.mm.bing.net/th?id=OIP.GY2pOe-LZ5UrZb665jhVxAHaHa&pid=Api&P=0');
+            background-size: cover;
+        }
+
+        .username {
+            border-radius: 0px 0px 15px 15px;
+            background-color: whitesmoke;
+            width: 100%;
+            position: relative;
+            padding: 100px 50px 10px 50px;
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        .image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-size: cover;
+            position: absolute;
+            left: 50px;
+            top: 70px;
+
+
+        }
+
+        .edit {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+        }
+
+        .section2 {
+            position: relative;
+            padding: 100px 50px 10px 50px;
+        }
+
+        .section3 {
+            position: relative;
+            padding: 100px 50px 10px 50px;
+        }
+
+        .section4 {
+            position: relative;
+            padding: 100px 50px 10px 50px;
+        }
+
+        .section5 {
+            position: relative;
+            padding: 100px 50px 10px 50px;
+        }
+
+        .section6 {
+            position: relative;
+            padding: 100px 50px 10px 50px;
+        }
+
+        .button {
+            position: relative;
+            left: 90%;
+            display: inline-block;
+        }
+
+        .objective {
+            width: 40%;
+            height: 132px;
+            margin-right: 77px;
+            margin-top: -63px;
+
+        }
+
+        .obj {
+            width: 100%;
+            height: 132px;
+            margin-right: 80px;
+
+        }
+
+        .education {
+            height: 280px;
+            margin-bottom: 15px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .project {
+            height: 150px;
+            margin-bottom: 15px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">{Mumbai Coding Club}</div>
+        <div class="icon_username">
+            <div class="userName">
+                <h1>{{user.first_name}}</h1>
+            </div>
+            <div class="icon">
+                <img src="{% static 'images/icon.jpg' %}" alt="">
+                
+                    <a href="{% url 'dashboard' %}">
+                        <li style="margin-top: 30px;">Back</li>
+                    </a>
+                    <a href="/signout">
+                        <li>Logout</li>
+                    </a>
+                
+            </div>
+        </div>
+    </nav>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>Hey! </strong>{{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="container-lg mx-5">
+        <section class="section1">
+            <div class="coverpage">
+                <div class="camera">
+                </div>
+            </div>
+            <div class="username">
+                <div>
+                    <h4 style="display: inline-block;">{{personal.name}}</h4>
+                    <p style="display: inline-block;">({{personal.gender}})</p>
+                    <p>{{personal.city}},{{personal.state}},{{personal.country}}</p>
+                    <h5>{{personal.profession}}</h5>
+
+                    {% comment %} Contact info button {% endcomment %}
+
+                    <button type="button" style="position:absolute;left:93%;bottom:60px;" class="btn btn-info mr-2 my-2"
+                        data-toggle="modal" data-target="#contactModal">
+                        <i class="fa fa-address-book"></i>
+                    </button>
+
+                    {% comment %} Update personal info button {% endcomment %}
+
+                    <button type="button" class="btn btn-success"
+                        style="height:38px;position:absolute;left:93%;bottom:25px;" data-toggle="modal"
+                        data-target="#updatepersonalModal">
+                        <i class="fa fa-edit"></i>
+                    </button>
+
+                    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModal"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="contactModalTitle">Contact Us</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="#" method='POST'> {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="">Phone</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone"
+                                                value="{{personal.phone}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                value="{{personal.email}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Date_of_Birth</label>
+                                            <input type="date" class="form-control" class="form-control"
+                                                id="date_of_birth" name="date_of_birth"
+                                                value="{{personal.date_of_birth}}">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="objective">
+                    <h3>Objective</h3>
+                    <p class="obj"><b>{{personal.objective}}</b></p>
+                </div>
+                <div class="edit">
+
+                    {% comment %} Add personal info button {% endcomment %}
+
+                    <button type="button" style="border-radius:50%;width:50px; height:50px;"
+                        class="btn btn-success mr-2 my-2" data-toggle="modal" data-target="#personalModal">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+
+                    <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="personalModal"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="personalModalTitle">Personal Information</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form action="personalinfo/" method='POST'> {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                placeholder="Enter Your Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Phone</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone"
+                                                placeholder="Enter Your Mobile Number">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Gender</label>
+                                            <input type="text" class="form-control" class="form-control" id="gender"
+                                                name="gender" placeholder="Enter Your Gender">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                placeholder="Enter Your Email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Marital_Status</label>
+                                            <input type="text" class="form-control" id="marital_status"
+                                                name="marital_status" placeholder="Enter Your marital status">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Date_of_Birth</label>
+                                            <input type="date" class="form-control" id="date_of_birth"
+                                                name="date_of_birth" placeholder="Select Your Date of Birth">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Profession</label>
+                                            <input type="text" class="form-control" id="profession" name="profession"
+                                                placeholder="Enter Your Profession">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Objective</label>
+                                            <textarea class="form-control" rows="4" cols="50" id="objective"
+                                                name="objective" placeholder="Enter Your Objective"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Enter City Name</label>
+                                            <input type="text" class="form-control" id="city" name="city"
+                                                placeholder="Enter Your City Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Enter State Name</label>
+                                            <input type="text" class="form-control" id="state" name="state"
+                                                placeholder="Enter Your State Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Enter Country Name</label>
+                                            <input type="text" class="form-control" id="country" name="country"
+                                                placeholder="Enter Your Country Name">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {% comment %}...........................update personalInformation model ........................{%endcomment %}
+
+                    <div class="modal fade" id="updatepersonalModal" tabindex="-1" aria-labelledby="updatepersonalModal"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updatepersonalModalTitle">Update Personal Information
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="updatepersonalinfo/" method='POST'> {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name"
+                                                value="{{personal.name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Phone</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone"
+                                                value="{{personal.phone}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Gender</label>
+                                            <input type="text" class="form-control" class="form-control" id="gender"
+                                                name="gender" value="{{personal.gender}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                value="{{personal.email}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Marital_Status</label>
+                                            <input type="text" class="form-control" id="marital_status"
+                                                name="marital_status" value="{{personal.marital_status}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Date_of_Birth</label>
+                                            <input type="date" class="form-control" id="date_of_birth"
+                                                name="date_of_birth" value="{{personal.date_of_birth}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Profession</label>
+                                            <input type="text" class="form-control" id="profession" name="profession"
+                                                value="{{personal.profession}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Objective</label>
+                                            <textarea class="form-control" rows="5" cols="50" id="objective"
+                                                name="objective">{{personal.objective}}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Enter City Name</label>
+                                            <input type="text" class="form-control" id="city" name="city"
+                                                value="{{personal.city}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Enter State Name</label>
+                                            <input type="text" class="form-control" id="state" name="state"
+                                                value="{{personal.state}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="">Enter Country Name</label>
+                                            <input type="text" class="form-control" id="country" name="country"
+                                                value="{{personal.country}}">
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="image">
+                <img src="{% static 'images/icon.jpg' %}" alt="">
+            </div>
+        </section>
+
+
+
+
+        {% comment %} ....................................Work Experience.........................................{%endcomment %}
+
+
+
+        <section class="section2">
+            <h1>Experience</h1>
+            <div class="education">
+                {% for i in work %}
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <ul>
+                        <li>Company_name: <b>{{i.company_name}}</b></li>
+                        <li>Location: <b>{{i.location}}</b></li>
+                        <li>Start_Month: <b>{{i.joining_date}}</b></li>
+                        <li>End_Month: <b>{{i.end_date}}</b></li>
+                        <li>Designation: <b>{{i.designation}}</b></li>
+                        <li>Working_On: <b>{{i.working_on}}</b></li>
+                    </ul>
+
+                    {% comment %} work experience delete button {% endcomment %}
+
+                    <div class="button">
+                        <a href="deleted/{{i.id}}"><button class="btn btn-danger"><i
+                                    class="fa fa-trash"></i></button></a>
+                    </div>
+
+                    {% comment %} work experience update button {% endcomment %}
+
+                    <div class="button">
+                        <button type="button" class="btn btn-success mr-2 my-2" data-toggle="modal"
+                            data-target="#updateworkexprienceModal-{{forloop.counter}}"><i
+                                class="fa fa-edit"></i></button>
+                    </div>
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="edit">
+
+                {% comment %} work experience Add button {% endcomment %}
+
+                <button type="button" style="border-radius:50%;width:50px; height:50px;"
+                    class="btn btn-success mr-2 my-2" data-toggle="modal" data-target="#workModal">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <div class="modal fade" id="workModal" tabindex="-1" aria-labelledby="workModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="workModalTitle">Work Experience</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="workexperience/" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Your Company Name</label>
+                                        <input type="text" class="form-control" id="company_name" name="company_name"
+                                            placeholder="Company Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Company location</label>
+                                        <input type="text" class="form-control" id="location" name="location"
+                                            placeholder="location">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Start_Month</label>
+                                        <input type="month" class="form-control" id="jd" name="jd"
+                                            placeholder="Select Your Joining Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">End_Month</label>
+                                        <input type="month" class="form-control" id="ed" name="ed"
+                                            placeholder="Select Your End Date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Designation</label>
+                                        <input type="text" class="form-control" id="designation" name="designation"
+                                            placeholder="designation">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Working On</label>
+                                        <input type="text" class="form-control" id="working_on" name="working_on"
+                                            placeholder="working on">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% comment %} .................................work Experience Update modal......................................... {% endcomment %}
+
+                {% for i in work %}
+                <div class="modal fade" id="updateworkexprienceModal-{{forloop.counter}}" tabindex="-1"
+                    aria-labelledby="updateworkexprienceModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateworkexprienceModalTitle">Update Work Experience</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="updateworkexperience/{{i.id}}" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Your Company Name</label>
+                                        <input type="text" class="form-control" id="company_name" name="company_name"
+                                            value="{{i.company_name}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Company location</label>
+                                        <input type="text" class="form-control" id="location" name="location"
+                                            value="{{i.location}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Start_Month</label>
+                                        <input type="month" class="form-control" id="jd" name="jd"
+                                            value="{{i.joining_date}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">End_Month</label>
+                                        <input type="month" class="form-control" id="ed" name="ed"
+                                            value="{{i.end_date}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Designation</label>
+                                        <input type="text" class="form-control" id="designation" name="designation"
+                                            value="{{i.designation}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Working On</label>
+                                        <input type="text" class="form-control" id="working_on" name="working_on"
+                                            value="{{i.working_on}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+
+
+        {% comment %} ...............................................Education........................................{%endcomment %}
+        <section class="section3">
+            <h1>Education</h1>
+            <div class="education">
+                {% for x in educ %}
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <ul>
+                        <li>Institute: <b>{{x.institute}}</b></li>
+                        <li>Education: <b>{{x.education}}</b></li>
+                        <li>Passing_Year: <b>{{x.passing_year}}</b></li>
+                        <li>Score: <b>{{x.score}}</b></li>
+                    </ul>
+
+                    {% comment %} education delete button {% endcomment %}
+
+                    <div class="button">
+                        <a href="destroy/{{x.id}}"><button class="btn btn-danger"><i
+                                    class="fa fa-trash"></i></button></a>
+                    </div>
+
+                    {% comment %} education update button {% endcomment %}
+
+                    <div class="button">
+                        <button type="button" style="height:40px;" class="btn btn-success mr-2 my-2" data-toggle="modal"
+                            data-target="#updateeducationModal-{{forloop.counter}}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="edit">
+
+                {% comment %} education Add button {% endcomment %}
+
+                <button type="button" style="border-radius:50%;width:50px; height:50px;"
+                    class="btn btn-success mr-2 my-2" data-toggle="modal" data-target="#educationModal">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="educationModalTitle">Education</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="education/" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Your Instittue</label>
+                                        <input type="text" class="form-control" id="institute" name="institute"
+                                            placeholder="Institute">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Education</label>
+                                        <input type="text" class="form-control" id="education" name="education"
+                                            placeholder="Education">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Passing Year</label>
+                                        <input type="month" class="form-control" id="passing_year" name="passing_year"
+                                            placeholder="passing_year">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Score</label>
+                                        <input type="number" class="form-control" id="score" name="score"
+                                            placeholder="Score">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {% comment %} ...........................................Education update modal................................................. {% endcomment %}
+
+
+                {% for x in educ %}
+                <div class="modal fade" id="updateeducationModal-{{forloop.counter}}" tabindex="-1"
+                    aria-labelledby="educationModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="educationModalTitle">Education</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="updateeducation/{{x.id}}" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Your Instittue</label>
+                                        <input type="text" class="form-control" id="institute" name="institute"
+                                            value="{{x.institute}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Education</label>
+                                        <input type="text" class="form-control" id="education" name="education"
+                                            value="{{x.education}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Passing Year</label>
+                                        <input type="month" class="form-control" id="passing_year" name="passing_year"
+                                            value="{{x.passing_year}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Your Score</label>
+                                        <input type="number" class="form-control" id="score" name="score"
+                                            value="{{x.score}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+
+
+
+        {% comment %} ..........................................Project........................................{%endcomment %}
+        <section class="section4">
+            <h1>Project</h1>
+            <div class="project">
+                {% for y in proj %}
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <ul>
+                        <li>Project_Title: <b>{{y.title}}</b></li>
+                        <li>Project_description: <b>{{y.description}}</b></li>
+
+                        {% comment %} project delete button {% endcomment %}
+
+                        <div class="button">
+                            <a href="destruction/{{y.id}}"><button class="btn btn-danger"><i
+                                        class="fa fa-trash"></i></button></a>
+                        </div>
+
+                        {% comment %} project update button {% endcomment %}
+
+                        <div class="button">
+                            <button type="button" style="height:40px;" class="btn btn-success mr-2 my-2"
+                                data-toggle="modal" data-target="#updateprojectModal-{{forloop.counter}}">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="edit">
+
+                {% comment %} add project button {% endcomment %}
+
+                <button type="button" style="border-radius:50%;width:50px; height:50px;"
+                    class="btn btn-success mr-2 my-2" data-toggle="modal" data-target="#projectModal">
+                    <i class="fa fa-pencil"></i>
+                </button>
+
+                <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="projectModalTitle">Project</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="project/" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Projcet Title</label>
+                                        <input type="text" class="form-control" id="title" name="title"
+                                            placeholder="Project title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Project Description</label>
+                                        <input type="text" class="form-control" id="description" name="description"
+                                            placeholder="Project description">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {% comment %} ........................project update modal............................... {% endcomment %}
+
+
+                {% for y in proj %}
+                <div class="modal fade" id="updateprojectModal-{{forloop.counter}}" tabindex="-1" aria-labelledby="projectModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="projectModalTitle">Update Project</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="updateproject/{{y.id}}" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Projcet Title</label>
+                                        <input type="text" class="form-control" id="title" name="title"
+                                            value="{{y.title}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Project Description</label>
+                                        <input type="text" class="form-control" id="description" name="description"
+                                            value="{{y.description}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+
+
+
+
+
+        {% comment %}.....................................Additionalinformation............................................ {%endcomment %}
+        <section class="section5">
+            <h1>Additional Information</h1>
+            {% for n in additi %}
+            <div class="shadow p-3 mb-5 bg-white rounded">
+                <ul>
+                    <li>Language: <b>{{n.language}}</b></li>
+                    <li>Personal_WL: <b>{{n.personal_wl}}</b></li>
+                    <li>Skill: <b>{{n.skill}}</b></li>
+
+                    {% comment %} additional Information delete button {% endcomment %}
+
+                    <div class="button">
+                        <a href="destructor/{{n.id}}"><button class="btn btn-danger"><i
+                                    class="fa fa-trash"></i></button></a>
+                    </div>
+
+                    {% comment %} additional Information update button {% endcomment %}
+
+                    <div class="button">
+                        <button type="button" style="height:40px;" class="btn btn-success mr-2 my-2" data-toggle="modal"
+                            data-target="#updateadditionalModal-{{forloop.counter}}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </div>
+                </ul>
+            </div>
+            {% endfor %}
+            <div class="edit">
+
+                {% comment %} additional Information Add button {% endcomment %}
+
+                <button type="button" style="border-radius:50%;width:50px; height:50px;"
+                    class="btn btn-success mr-2 my-2" data-toggle="modal" data-target="#additionalModal">
+                    <i class="fa fa-pencil"></i>
+                </button>
+
+                <div class="modal fade" id="additionalModal" tabindex="-1" aria-labelledby="additionalModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="additionalModalTitle">Additional Information</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="additionalinfo/" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Language</label>
+                                        <input type="text" class="form-control" id="language" name="language"
+                                            placeholder="language">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Personal Website Link</label>
+                                        <input type="url" class="form-control" id="personal_wl" name="personal_wl"
+                                            placeholder="Personal Website Link">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Skill</label>
+                                        <textarea class="form-control" rows="4" cols="10" id="skill" name="skill"
+                                            placeholder="Skill"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% for n in additi %}
+                <div class="modal fade" id="updateadditionalModal-{{forloop.counter}}" tabindex="-1" aria-labelledby="additionalModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="additionalModalTitle">Update Additional Information</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="updateadditionalinfo/{{n.id}}" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Language</label>
+                                        <input type="text" class="form-control" id="language" name="language"
+                                            value="{{n.language}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Personal Website Link</label>
+                                        <input type="url" class="form-control" id="personal_wl" name="personal_wl"
+                                            value="{{n.personal_wl}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Skill</label>
+                                        <textarea class="form-control" rows="4" cols="10" id="skill" name="skill">{{n.skill}}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+        {% comment %} .....................................Social_Profile..........................................{%endcomment %}
+
+        <section class="section6">
+            <h1>Social_Profile</h1>
+            <div class="project">
+                {% for u in social %}
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <ul>
+                        <li>Social_Profile: <b>{{u.social_profile}}</b></li>
+                        <li>Link: <b>{{u.url}}</b></li>
+
+                        {% comment %} social profile delete button {% endcomment %}
+
+                        <div class="button">
+                            <a href="erase/{{u.id}}"><button class="btn btn-danger"><i
+                                        class="fa fa-trash"></i></button></a>
+                        </div>
+
+                        {% comment %} social profile update button {% endcomment %}
+
+                        <div class="button">
+                            <button type="button" style="height:40px;" class="btn btn-success mr-2 my-2"
+                                data-toggle="modal" data-target="#updatesocialprofileModal-{{forloop.counter}}">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="edit">
+
+                {% comment %} social profile add button {% endcomment %}
+
+                <button type="button" style="border-radius:50%;width:50px; height:50px;"
+                    class="btn btn-success mr-2 my-2" data-toggle="modal" data-target="#Social_ProfileModal">
+                    <i class="fa fa-pencil"></i>
+                </button>
+
+                <div class="modal fade" id="Social_ProfileModal" tabindex="-1" aria-labelledby="Social_ProfileModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Social_ProfileModalTitle">Social_Profile</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="socialprofile/" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Social Profile</label>
+                                        <input type="text" class="form-control" id="socialprofile" name="socialprofile"
+                                            placeholder="Social Profile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Social Profile Link</label>
+                                        <input type="url" class="form-control" id="link" name="link"
+                                            placeholder="Social Profile Link">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                {% for u in social %}
+                <div class="modal fade" id="updatesocialprofileModal-{{forloop.counter}}" tabindex="-1" aria-labelledby="Social_ProfileModal"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Social_ProfileModalTitle">Update Social_Profile</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="updatesocialprofile/{{u.id}}" method='POST'> {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="">Enter Social Profile</label>
+                                        <input type="text" class="form-control" id="socialprofile" name="socialprofile"
+                                            value="{{u.social_profile}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Enter Social Profile Link</label>
+                                        <input type="url" class="form-control" id="link" name="link"
+                                            value="{{u.url}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+        {% comment %} .................................Generate CV button...........................................{%endcomment %}
+        <div class="text-center">
+            <a href="generate/"><button type="submit" class="btn btn-success">Generate CV</button></a>
+            <a href="{% url 'download' %}"><button type="button" class="btn btn-success" style="width: 50px;"><i
+                        class="fa fa-download"></button></i></a>
+
+
+
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
