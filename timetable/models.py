@@ -1,0 +1,31 @@
+from django.db import models
+
+# Create your models here.
+class Sem(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
+class Course(models.Model):
+    id = models.AutoField(primary_key=True)
+    code=models.CharField(max_length=255,unique=True)
+    name=models.CharField(max_length=255)
+    teaching_hour=models.IntegerField()
+    sem_id = models.ForeignKey(Sem,on_delete=models.CASCADE)
+    is_lab = models.BooleanField(default=False)
+
+class Faculty(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid= models.CharField(max_length=255,unique=True)
+    name= models.CharField(max_length=255)
+    teaching_hour=models.IntegerField()
+    subject_code=models.ForeignKey(Course,on_delete=models.CASCADE)
+
+class Room(models.Model):
+    id = models.AutoField(primary_key=True)
+    name= models.CharField(max_length=255)
+    is_lab = models.BooleanField(default=False)
+
+class Time(models.Model):
+    id = models.AutoField(primary_key=True)
+    start=models.IntegerField()
+    end=models.IntegerField()

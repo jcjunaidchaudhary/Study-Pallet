@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('resume/',include('resumebuilder.urls')),
-    path('attendance/', include('attendance.urls'))
+    path('attendance/', include('attendance.urls')),
+    path('timetable/', include('timetable.urls'))
 ]
 

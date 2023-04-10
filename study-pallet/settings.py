@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'accounts',
     'attendance',
     'resumebuilder',
+    'timetable'
 ]
 
 MIDDLEWARE = [
