@@ -3,23 +3,23 @@ from django.http  import  HttpResponse
 import random 
 import numpy as np
 
-from timetable.models import Course, Faculty, Sem, Time
+from timetable.models import Course, Sem, Time
 
 # Create your views here.
 
 def timetable(request):
-    sem_id_id=1
+    sem_id=1
     lst = []
     d = 0
     p = 0
     # subnum = int(input("Enter number of subjects: "))
-    subnum=Course.objects.filter(sem_id_id=sem_id_id)
+    subnum=Course.objects.filter(sem_id=sem_id)
 
+    # print(subnum)
     for sub in subnum:    
         
-        print(sub)
         # sub = input("enter subject :")
-        sub_code=sub.code
+        sub_code=sub.code+" L "+sub.uid
         # f = int(input("enter frequency :"))
         f=sub.teaching_hour
         d = d + f
@@ -35,7 +35,7 @@ def timetable(request):
     for slot in number_of_slots:
         start=slot.start
         end=slot.end
-        time.append(str(start)+"-"+str(end))
+        time.append(start+"-"+end+"  ")
 
     print(time,"123")
 
@@ -79,7 +79,7 @@ def timetable(request):
         print("-----FE ", end="")
         print(p + 1, end="")
         print("------")
-        print("TIME  MON  TUE  WED  THU  FRI")
+        print("TIME              MON  TUE  WED  THU  FRI")
         for i in range(R):
             print(time[i], end="")
             for j in range(C):
@@ -87,14 +87,14 @@ def timetable(request):
             print()
         return HttpResponse("success")
     
-def faculty(request):
-    # if request.method == 'POST':
-    uid = "ZM"
-    name="Zainab Mirza"
-    teaching_hour=22
-    faculty=Faculty(uid=uid,name=name,teaching_hour=teaching_hour,subject_code_id=3)    
-    faculty.save()
-    return HttpResponse("success")
+# def faculty(request):
+#     # if request.method == 'POST':
+#     uid = "VB"
+#     name="Vikas Bloda"
+#     teaching_hour=20
+#     faculty=Faculty(uid=uid,name=name,teaching_hour=teaching_hour,subject_code_id=6)    
+#     faculty.save()
+#     return HttpResponse("success")
 
 def rooms(request):
     print("hello")
@@ -104,12 +104,14 @@ def rooms(request):
 
 def course(request):
     # if request.method == 'POST':
-    code="CCS"
-    name="Cloud Computing"
-    teaching_hour="4"
+    code="EM"
+    name="Environments Management"
+    teaching_hour=4
     is_lab=False
+    uid="AW"
+    faculty="Amay Waghe"
     # print(">>>>>>>>>>>>>>>>>>>",sem_id)
-    course=Course(code=code,name=name,teaching_hour=teaching_hour,is_lab=is_lab,sem_id_id=1)
+    course=Course(code=code,name=name,teaching_hour=teaching_hour,is_lab=is_lab,uid=uid,faculty=faculty,sem_id=1)
     course.save()
     return HttpResponse("success")
 
@@ -121,8 +123,8 @@ def sem(request):
     return HttpResponse("Successfully") 
  
 def time(request):
-    start=3.00
-    end=4.00
+    start="3.00am"
+    end="4.00am"
     time=Time(start=start,end=end)
     time.save()
     return HttpResponse("success")

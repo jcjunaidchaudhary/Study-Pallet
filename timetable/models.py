@@ -10,15 +10,17 @@ class Course(models.Model):
     code=models.CharField(max_length=255,unique=True)
     name=models.CharField(max_length=255)
     teaching_hour=models.IntegerField()
-    sem_id = models.ForeignKey(Sem,on_delete=models.CASCADE)
+    sem = models.ForeignKey(Sem,on_delete=models.CASCADE)
     is_lab = models.BooleanField(default=False)
+    uid= models.CharField(max_length=255)
+    faculty= models.CharField(max_length=255)
 
-class Faculty(models.Model):
-    id = models.AutoField(primary_key=True)
-    uid= models.CharField(max_length=255,unique=True)
-    name= models.CharField(max_length=255)
-    teaching_hour=models.IntegerField()
-    subject_code=models.ForeignKey(Course,on_delete=models.CASCADE)
+# class Faculty(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     uid= models.CharField(max_length=255,unique=True)
+#     name= models.CharField(max_length=255)
+#     teaching_hour=models.IntegerField()
+#     subject_code=models.ForeignKey(Course,on_delete=models.CASCADE)
 
 class Room(models.Model):
     id = models.AutoField(primary_key=True)
@@ -27,5 +29,5 @@ class Room(models.Model):
 
 class Time(models.Model):
     id = models.AutoField(primary_key=True)
-    start=models.IntegerField()
-    end=models.IntegerField()
+    start=models.CharField(max_length=15)
+    end=models.CharField(max_length=15)
