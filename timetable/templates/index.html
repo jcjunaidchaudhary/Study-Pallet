@@ -1,0 +1,256 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>ResumeBuilder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: powderblue;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            height: 90%;
+            background: white;
+        }
+
+        .box_contain {
+            height: 350px;
+            overflow: scroll;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">{Mumbai Coding Club}</div>
+        <div class="icon_username">
+            <div class="userName">
+                <h1>{{user.first_name}}</h1>
+            </div>
+            <div class="icon">
+                <img src="{% static 'images/icon.jpg' %}" alt="">
+
+                <a href="{% url 'dashboard' %}">
+                    <li style="margin-top: 30px;">Back</li>
+                </a>
+                <a href="/signout">
+                    <li>Logout</li>
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                aria-controls="nav-home" aria-selected="true">Semester</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                aria-controls="nav-profile" aria-selected="false">Course</a>
+            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                aria-controls="nav-contact" aria-selected="false">Time Slot</a>
+            <a class="nav-item nav-link" id="nav-time-tab" data-toggle="tab" href="#nav-time" role="tab"
+                aria-controls="nav-time" aria-selected="false">Room & Lab</a>
+        </div>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="container">
+                    <form action="sem/" method="POST"> {% csrf_token %}
+                        <div class="box">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Enter Semeter</span>
+                                </div>
+                                <input type="text" name="name" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Number Of
+                                        Student</span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default" name="students">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Success</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                <div class="box_contain">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr.No</th>
+                                <th scope="col">Semeter</th>
+                                <th scope="col">No of Student</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for element,idx in sem %}
+                            <tr>
+                                <th scope="row">{{idx}}</th>
+                                <td>{{element.name}}</td>
+                                <td>{{element.students}}</td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="container">
+                    <form action="course/" method="POST"> {% csrf_token %}
+                        <div class="box">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Course Abbreviation</span>
+                                </div>
+                                <input type="text" name="code" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Course Name</span>
+                                </div>
+                                <input type="text" name="course" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Hour/Week</span>
+                                </div>
+                                <input type="text" name="teaching_hour" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+
+                            <!-- <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Classroom/Lab
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                  <a class="dropdown-item" href="#" value="false">Classroom</a>
+                                  <a class="dropdown-item" href="#" value="true">Lab</a>
+                                </div>
+                              </div> -->
+
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Classroom/Lab </span>
+                                </div>
+                                <input type="text" name="is_lab" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Faculty Abbreviation </span>
+                                </div>
+                                <input type="text" name="uid" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Faculty Name</span>
+                                </div>
+                                <input type="text" name="faculty" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Semeter</span>
+                                </div>
+                                <input type="text" name="sem" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Success</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                <div class="box_contain">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr.No</th>
+                                <th scope="col">Semeter</th>
+                                <th scope="col">No of Student</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for element,idx in course %}
+                            <tr>
+                                <th scope="row">{{idx}}</th>
+                                <td>{{element.code}}</td>
+                                <td>{{element.name}}</td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">..3.</div>
+            <div class="tab-pane fade" id="nav-time" role="tabpanel" aria-labelledby="nav-time-tab">..4.</div>
+        </div>
+
+    </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
