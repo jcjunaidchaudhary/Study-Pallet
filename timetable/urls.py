@@ -7,6 +7,6 @@ urlpatterns=[
     path('course/',views.course,name='course'),
     path('rooms/',views.rooms,name='room'),
     path('sem/',views.sem,name='sem'),
-    path('time/',views.time,name='time'),
+    path('time-slot/',views.time,name='time'),
     path('generate-timetable/',views.timetable,name='generate-timetable'),
 ]

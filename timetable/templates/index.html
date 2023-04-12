@@ -25,28 +25,47 @@
             background-color: powderblue;
             overflow-x: hidden;
         }
-
+        
         .container {
             width: 100%;
-            height: 90%;
+            min-sheight: 100%;
+            padding-top:10px;
+            padding-bottom:10px;
             background: white;
         }
 
         .box_contain {
             height: 350px;
-            overflow: scroll;
+            overflow: auto;
+        }
+        .box{
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap:wrap;
+
+        }
+        .input-group{
+            width :48%;
+            margin:5px;
+        }
+        .input_box{
+            width:100%;
+        }
+        .btn{
+            margin:0px 15px;
         }
     </style>
 </head>
 
 <body>
     <nav>
-        <div class="logo">{Mumbai Coding Club}</div>
+        <div class="logo">{M.H. Saboo Siddik College of Engineering}</div>
         <div class="icon_username">
             <div class="userName">
                 <h1>{{user.first_name}}</h1>
             </div>
-            <div class="icon">
+            <div class="icon ">
                 <img src="{% static 'images/icon.jpg' %}" alt="">
 
                 <a href="{% url 'dashboard' %}">
@@ -62,7 +81,6 @@
 
     <div class="container">
 
-
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
                 aria-controls="nav-home" aria-selected="true">Semester</a>
@@ -72,6 +90,8 @@
                 aria-controls="nav-contact" aria-selected="false">Time Slot</a>
             <a class="nav-item nav-link" id="nav-time-tab" data-toggle="tab" href="#nav-time" role="tab"
                 aria-controls="nav-time" aria-selected="false">Room & Lab</a>
+            <a class="nav-item nav-link" id="nav-time-tab" data-toggle="tab" href="#nav-timetable" role="tab"
+                aria-controls="nav-timetable" aria-selected="false">Generate TimeTable</a>
         </div>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
@@ -135,7 +155,8 @@
                         <div class="box">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-default">Course Abbreviation</span>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Course
+                                        Abbreviation</span>
                                 </div>
                                 <input type="text" name="code" class="form-control" aria-label="Default"
                                     aria-describedby="inputGroup-sizing-default">
@@ -155,28 +176,10 @@
                                 <input type="text" name="teaching_hour" class="form-control" aria-label="Default"
                                     aria-describedby="inputGroup-sizing-default">
                             </div>
-
-                            <!-- <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Classroom/Lab
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="#" value="false">Classroom</a>
-                                  <a class="dropdown-item" href="#" value="true">Lab</a>
-                                </div>
-                              </div> -->
-
-
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-default">Classroom/Lab </span>
-                                </div>
-                                <input type="text" name="is_lab" class="form-control" aria-label="Default"
-                                    aria-describedby="inputGroup-sizing-default">
-                            </div>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroup-sizing-default">Faculty Abbreviation </span>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Faculty Abbreviation
+                                    </span>
                                 </div>
                                 <input type="text" name="uid" class="form-control" aria-label="Default"
                                     aria-describedby="inputGroup-sizing-default">
@@ -197,6 +200,85 @@
                                 <input type="text" name="sem" class="form-control" aria-label="Default"
                                     aria-describedby="inputGroup-sizing-default">
                             </div>
+                            <div class="form-group row input_box">
+                                <div class="col-sm-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="Check1" name="Check1">
+                                        <label class="form-check-label" for="Check1">
+                                            Is Lab
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-success">Success</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                <div class="box_contain">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr.No</th>
+                                <th scope="col">Course Abbreviation</th>
+                                <th scope="col">Course Name</th>
+                                <th scope="col">Hour/Week</th>
+                                <th scope="col">Is Lab</th>
+                                <th scope="col">Faculty Abbreviation</th>
+                                <th scope="col">Faculty Name</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for element,idx in course %}
+                            <tr>
+                                <th scope="row">{{idx}}</th>
+                                <td>{{element.code}}</td>
+                                <td>{{element.name}}</td>
+                                <td>{{element.teaching_hour}}</td>
+                                <td>{{element.is_lab}}</td>
+                                <td>{{element.uid}}</td>
+                                <td>{{element.faculty}}</td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <div class="container">
+                    <form action="time-slot/" method="POST"> {% csrf_token %}
+                        <div class="box">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Start Time</span>
+                                </div>
+                                <input type="text" name="start" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                    </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">End Time</span>
+                                </div>
+                                <input type="text" name="end" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">.00</span>
+                                      </div>
+                            </div>
+
                         </div>
 
                         <button type="submit" class="btn btn-success">Success</button>
@@ -210,18 +292,18 @@
                         <thead>
                             <tr>
                                 <th scope="col">Sr.No</th>
-                                <th scope="col">Semeter</th>
-                                <th scope="col">No of Student</th>
+                                <th scope="col">Start Time</th>
+                                <th scope="col">End Time</th>
                                 <th scope="col">Delete</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {% for element,idx in course %}
+                            {% for element,idx in time %}
                             <tr>
                                 <th scope="row">{{idx}}</th>
-                                <td>{{element.code}}</td>
-                                <td>{{element.name}}</td>
+                                <td>{{element.start}}</td>
+                                <td>{{element.end}}</td>
                                 <td><button type="button" class="btn btn-danger">Delete</button></td>
                             </tr>
                             {% endfor %}
@@ -231,8 +313,129 @@
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">..3.</div>
-            <div class="tab-pane fade" id="nav-time" role="tabpanel" aria-labelledby="nav-time-tab">..4.</div>
+            <div class="tab-pane fade" id="nav-time" role="tabpanel" aria-labelledby="nav-time-tab">
+                <div class="container">
+                    <form action="rooms/" method="POST"> {% csrf_token %}
+                        <div class="box">
+                            <div class="input-group input_box mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+                                </div>
+                                <input type="text" name="name" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="form-group row input_box">
+                                <div class="col-sm-4">
+                                    <div class="form-check ">
+                                        <input class="form-check-input" type="checkbox" id="Check1" name="Check1">
+                                        <label class="form-check-label" for="Check1">
+                                            Is Lab
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Success</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                <div class="box_contain">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sr.No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Is Lab</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for element,idx in rooms %}
+                            <tr>
+                                <th scope="row">{{idx}}</th>
+                                <td>{{element.name}}</td>
+                                <td>{{element.is_lab}}</td>
+                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-timetable" role="tabpanel" aria-labelledby="nav-timetable-tab">
+                <div class="container">
+                    <form action="generate-timetable/" method="POST"> {% csrf_token %}
+                        <div class="box">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Number of TimeTable</span>
+                                </div>
+                                <input type="text" name="number" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Enter The Semester</span>
+                                </div>
+                                <input type="text" name="sem" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Generate TimeTable</button>
+                    </form>
+                </div>
+                <br>
+                <br>
+                <div class="box_contain">
+                    <h1>TimeTable</h1>
+
+                    {% for timetable in timetables %}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Day/Time</th>
+                                <th scope="col">Monday</th>
+                                <th scope="col">Tuesday</th>
+                                <th scope="col">Wednesday</th>
+                                <th scope="col">Thursday</th>
+                                <th scope="col">Friday</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for i in timetable %}
+                            <tr>
+                                <th scope="row">{{time}}</th>
+                                <td>{{i.M}}</td>
+                                <td>{{i.T}}</td>
+                                <td>{{i.W}}</td>
+                                <td>{{i.T}}</td>
+                                <td>{{i.F}}</td> 
+                                {% comment %} <td>{{element}}</td>
+                                <td>{{element}}</td>
+                                <td>{{element[2]}}</td>
+                                <td>{{element[3]}}</td>
+                                <td>{{element[4]}}</td> {% endcomment %}
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                    
+                    {% endfor %}
+                    
+                </div>
+            </div>
         </div>
 
     </div>
