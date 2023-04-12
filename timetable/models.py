@@ -4,6 +4,7 @@ from django.db import models
 class Sem(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    department=models.CharField(max_length=255)
 
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
@@ -15,12 +16,6 @@ class Course(models.Model):
     uid= models.CharField(max_length=255)
     faculty= models.CharField(max_length=255)
 
-# class Faculty(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     uid= models.CharField(max_length=255,unique=True)
-#     name= models.CharField(max_length=255)
-#     teaching_hour=models.IntegerField()
-#     subject_code=models.ForeignKey(Course,on_delete=models.CASCADE)
 
 class Room(models.Model):
     id = models.AutoField(primary_key=True)

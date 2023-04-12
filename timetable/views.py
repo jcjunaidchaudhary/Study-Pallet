@@ -4,6 +4,7 @@ import random
 import numpy as np
 
 from timetable.models import Course, Room, Sem, Time
+from timetable.service import am_pm, convert_days
 
 # Create your views here.
 
@@ -38,7 +39,8 @@ def timetable(request):
         
     if request.method == 'POST':
         timetables = [] 
-        sem_id = request.POST.get('sem')
+        sem=request.POST.get('sem','')
+        sem=Sem.objects.get(name=sem)
         k=request.POST.get('number')
 
         print(k)
@@ -46,10 +48,9 @@ def timetable(request):
         d = 0
         p = 0
         # subnum = int(input("Enter number of subjects: "))
-        subnum=Course.objects.filter(sem_id=sem_id)
+        subnum=Course.objects.filter(sem_id=sem.id)
 
         print(subnum)
-        # return HttpResponse("success")
 
         lab=[]
         for sub in subnum:    
@@ -70,25 +71,7 @@ def timetable(request):
                 lst.append(sub_code)
 
         for i in range(3):
-            lst.append(lab[0])
-
-        print("lst---------",lab)
-        # # lab2=[]
-        # for i in range(3):
-        #     if i ==0:
-        #         lab[0]=lab[0].replace("g","A")
-        #         # lab[0][-4]="C"
-        #         print(lab)
-        #         # lst.append(lab[0])
-        #     if i ==1:
-        #         lab[0][3]="B"
-        #         lab[0][-4]="A"
-        #         # lst.append(lab[0])
-        #     if i ==2:
-        #         lab[0][3]="C"
-        #         lab[0][-4]="B"
-        #         # lst.append(lab[0])
-                
+            lst.append(lab[0])                
 
         time=[]
         # number_of_slots=int(input("Enter number of slots"))
@@ -98,9 +81,6 @@ def timetable(request):
             start=slot.start
             end=slot.end
             time.append(start+"-"+end+"  ")
-
-        
-
 
         R = len(time)
         C = 5
@@ -151,24 +131,9 @@ def timetable(request):
                     print(matrix2[i][j], end="  ")
                 print()
             
-        print(timetables)
-        def convert_days(timetables):
-            timetables_days = []
-            for i in timetables:
-                timetable=[]
-                for j in i:
-                    days={}
-                    days.update({'M': j[0],"T": j[1],'W': j[2],"Th": j[3],"F": j[4]})
-                    timetable.append(days)
-                timetables_days.append(timetable)
-
-            return timetables_days
         
-        timetables_days=convert_days(timetables)
-        print(timetables_days)
-
-        print(time,"123")
-
+        timetables_days=convert_days(timetables,time)
+        
         return render(request, 'index.html',{'timetables':timetables_days,'time_slotS':time})
 
 
@@ -199,29 +164,31 @@ def course(request):
 
         uid=request.POST.get('uid','')
         faculty=request.POST.get('faculty','')
-        sem_id=request.POST.get('sem','')
-        course=Course(code=code,name=name,teaching_hour=teaching_hour,is_lab=is_lab,uid=uid,faculty=faculty,sem_id=sem_id)
+        sem=request.POST.get('sem','')
+        sem=Sem.objects.get(name=sem)
+        course=Course(code=code,name=name,teaching_hour=teaching_hour,is_lab=is_lab,uid=uid,faculty=faculty,sem_id=sem.id)
         course.save()
-    # print(">>>>>>>>>>>>>>>>>>>",sem_id)
 
     return redirect('home')
 
 def sem(request):
     if request.method == 'POST':
         name=request.POST.get('name','')
-        student=request.POST.get('student','')
-        sem=Sem(name=name)
+        department=request.POST.get('department','')
+        sem=Sem(name=name,department=department)
         sem.save()
     
     sem=Sem.objects.all()
-    sem_idx=zip(sem, range(1, len(sem)+1))
     return redirect('home')
  
 def time(request):
-    print("hello world")
     if request.method == 'POST':
+       
         start=request.POST.get('start','')
+        start=am_pm(start)
+
         end=request.POST.get('end','')
+        end=am_pm(end)
         time=Time(start=start,end=end)
         time.save()
     return redirect('home')
