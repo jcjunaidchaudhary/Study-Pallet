@@ -1,10 +1,13 @@
+import os
 from django.shortcuts import redirect, render
 from django.http  import  HttpResponse
 import random 
 import numpy as np
-
 from timetable.models import Course, Room, Sem, Time
-from timetable.service import am_pm, convert_days
+from timetable.service import am_pm, convert_days, generate_docx
+from django.core.files.storage import FileSystemStorage
+from docx2pdf import convert
+from datetime import date
 
 # Create your views here.
 
@@ -30,8 +33,6 @@ def index(request):
         end=slot.end
         time.append(start+"-"+end+"  ")
         
-
-
     return render(request, 'index.html',{'sem':sem_idx, 'course':course_idx, 'time':time_idx,"rooms":rooms_idx,"time_slots":time})
 
 
@@ -47,22 +48,19 @@ def timetable(request):
         lst = []
         d = 0
         p = 0
-        # subnum = int(input("Enter number of subjects: "))
         subnum=Course.objects.filter(sem_id=sem.id)
-
-        print(subnum)
 
         lab=[]
         for sub in subnum:    
             if sub.is_lab==True:
-                sub_code=sub.code+" g "+sub.uid
+                sub_code=sub.code+" G "+sub.uid
                 if lab:
                     lab[0]=lab[0]+" / "+sub_code
                 else:
                     lab.append(sub_code)
                 
                 continue
-            # sub = input("enter subject :")
+
             sub_code=sub.code+" L "+sub.uid
             # f = int(input("enter frequency :"))
             f=sub.teaching_hour
@@ -133,6 +131,8 @@ def timetable(request):
             
         
         timetables_days=convert_days(timetables,time)
+        # data={'timetables':timetables_days,'time_slotS':time}
+        # return redirect(f'home?{data}')
         
         return render(request, 'index.html',{'timetables':timetables_days,'time_slotS':time})
 
@@ -192,3 +192,68 @@ def time(request):
         time=Time(start=start,end=end)
         time.save()
     return redirect('home')
+
+def timetable_docx(request):
+
+    # data1=request.POST.get('timetable')
+    # print(">>>>>>>>>>>>",data1)
+    # sem=request.POST.get('sem')
+
+    timetable=[{'time': '9.00am-10.00am  ', 'M': 'BC g VB / CC g ZM', 'T': '--', 'W': 'CCS L ZM', 'Th': '--', 'F': '--'}, {'time': '10.00am-11.00am  ', 'M': 'BDLT L VB', 'T': 'BDLT L VB', 'W': 'EM L AW', 'Th': '--', 'F': 'BC g VB / CC g ZM'}, {'time': '11.00am-12.00am', 'M': 'BDA L AS', 'T': 'BC g VB / CC g ZM', 
+    'W': '--', 'Th': 'BDA L AS', 'F': 'BDA L AS'}, {'time': '12.00am-1.00am  ', 'M': '--', 'T': '--', 'W': '--', 'Th': '--', 'F': '--'}, {'time': '2.00am-3.00am  ', 'M': '--', 'T': 'EM L AW', 'W': '--', 'Th': 'CCS L ZM', 'F': 'CCS L ZM'}, {'time': '3.00am-4.00am  ', 'M': 'EM L AW', 'T': 'CCS L ZM', 'W': 'BDLT L VB', 'Th': 'EM L AW', 'F': '--'}]
+
+    data={}
+    # data={"department":"Information Technology","rooms":"208/306","semester":"VIII","date":"12-7-23"}
+    
+    sem=Sem.objects.get(name='VIII')
+    current_date = date.today()
+    rooms=Room.objects.filter(is_lab=False)
+
+    data["department"]=sem.department
+    data["semester"]=sem.name
+    data["date"]=current_date.strftime("%d-%m-%Y")
+    data["rooms"]=rooms[0].name+"/"+rooms[1].name
+   
+    generate_docx(timetable,data)
+
+    docx=f"{data.get('semester')}.docx"
+
+    fs = FileSystemStorage()
+    filename = str(docx)
+    with fs.open(filename) as docx:
+        response = HttpResponse(docx, content_type='application/docx')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename) 
+        # messages.success(request,"{} Resume Download Successfully!".format(user))
+        return response
+
+def timetable_pdf(request):
+    timetable=[{'time': '9.00am-10.00am  ', 'M': 'BC g VB / CC g ZM', 'T': '--', 'W': 'CCS L ZM', 'Th': '--', 'F': '--'}, {'time': '10.00am-11.00am  ', 'M': 'BDLT L VB', 'T': 'BDLT L VB', 'W': 'EM L AW', 'Th': '--', 'F': 'BC g VB / CC g ZM'}, {'time': '11.00am-12.00am', 'M': 'BDA L AS', 'T': 'BC g VB / CC g ZM', 
+    'W': '--', 'Th': 'BDA L AS', 'F': 'BDA L AS'}, {'time': '12.00am-1.00am  ', 'M': '--', 'T': '--', 'W': '--', 'Th': '--', 'F': '--'}, {'time': '2.00am-3.00am  ', 'M': '--', 'T': 'EM L AW', 'W': '--', 'Th': 'CCS L ZM', 'F': 'CCS L ZM'}, {'time': '3.00am-4.00am  ', 'M': 'EM L AW', 'T': 'CCS L ZM', 'W': 'BDLT L VB', 'Th': 'EM L AW', 'F': '--'}]
+
+    # data={"department":"Information Technology","rooms":"208/306","semester":"VII","date":"12-7-23"}
+
+    data={}
+    
+    sem=Sem.objects.get(name='VIII')
+    current_date = date.today()
+    rooms=Room.objects.filter(is_lab=False)
+
+    data["department"]=sem.department
+    data["semester"]=sem.name
+    data["date"]=current_date.strftime("%d-%m-%Y")
+    data["rooms"]=rooms[0].name+"/"+rooms[1].name
+
+    generate_docx(timetable,data)
+
+    convert(f"media/{data.get('semester')}.docx")
+
+    fs = FileSystemStorage()
+    filename = str(f"{data.get('semester')}.pdf")
+    with fs.open(filename) as pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename) 
+        
+        return response
+
+    
+

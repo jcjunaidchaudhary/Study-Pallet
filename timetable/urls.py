@@ -9,4 +9,6 @@ urlpatterns=[
     path('sem/',views.sem,name='sem'),
     path('time-slot/',views.time,name='time'),
     path('generate-timetable/',views.timetable,name='generate-timetable'),
+    path('generate-timetable/timetable-docx/',views.timetable_docx,name='timetable-docx'),
+    path('generate-timetable/timetable-pdf/',views.timetable_pdf,name='timetable-pdf'),
 ]
