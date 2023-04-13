@@ -20,7 +20,7 @@ def convert_days(timetables,time):
 
 
 def am_pm(time):
-    if int(time)<12:
+    if int(time)<12 and int(time)>6:
         time=time+".00am"
     else:
         time=time+".00pm"

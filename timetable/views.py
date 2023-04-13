@@ -197,7 +197,7 @@ def time(request):
 
 def timetable_docx(request):
 
-    # data1=request.POST.get('timetable')
+    # data1=request.POST.getlist('data')
     # print(">>>>>>>>>>>>",data1)
     # sem=request.POST.get('sem')
 
@@ -207,7 +207,7 @@ def timetable_docx(request):
     data={}
     # data={"department":"Information Technology","rooms":"208/306","semester":"VIII","date":"12-7-23"}
     
-    sem=Sem.objects.get(name='VIII')
+    sem=Sem.objects.get(name='VIII',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
 
@@ -236,7 +236,7 @@ def timetable_pdf(request):
 
     data={}
     
-    sem=Sem.objects.get(name='VIII')
+    sem=Sem.objects.get(name='VIII',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
 
@@ -264,18 +264,18 @@ def delete_course(request,id):
     course.delete()
     return redirect('home')
 
-def delete_sem(request,id):
+def delete_sem(request,id): 
     sem = Sem.objects.get(id=id)
     sem.delete()
     return redirect('home')
 
 def delete_room(request,id):
-    sem = Room.objects.get(id=id)
-    sem.delete()
+    room = Room.objects.get(id=id)
+    room.delete()
     return redirect('home')
 
 def delete_time(request,id):
-    sem = Time.objects.get(id=id)
-    sem.delete()
+    time = Time.objects.get(id=id)
+    time.delete()
     return redirect('home')
 
