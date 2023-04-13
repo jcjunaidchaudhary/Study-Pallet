@@ -1,4 +1,5 @@
-
+import json
+import os
 from django.shortcuts import redirect, render
 from django.http  import  HttpResponse
 import random 
@@ -24,7 +25,10 @@ def index(request):
     rooms=Room.objects.all()
     rooms_idx=zip(rooms, range(1, len(rooms)+1))
 
-    # timetables=request.GET.get('timetables')
+    timetables=request.GET.get('timetables')
+
+    if timetables:
+        timetables=eval(timetables)
 
     time=[]
         # number_of_slots=int(input("Enter number of slots"))
@@ -35,7 +39,7 @@ def index(request):
         end=slot.end
         time.append(start+"-"+end+"  ")
         
-    return render(request, 'index.html',{'sem':sem_idx, 'course':course_idx, 'time':time_idx,"rooms":rooms_idx,"time_slots":time})
+    return render(request, 'index.html',{'sem':sem_idx, 'course':course_idx, 'time':time_idx,"rooms":rooms_idx,"time_slots":time,'timetables':timetables})
 
 
 def timetable(request):
@@ -135,13 +139,13 @@ def timetable(request):
         
         timetables_days=convert_days(timetables,time)
         
-        # data={'timetables':timetables_days}
-        # query_params = '&'.join([f'{key}={value}' for key, value in data.items()])
+        data={'timetables':timetables_days}
+        query_params = '&'.join([f'{key}={value}' for key, value in data.items()])
         # print(query_params)
-        # return redirect(f'/timetable?{query_params}')
+        return redirect(f'/timetable?timetables={timetables_days}')
 
         
-        return render(request, 'index.html',{'timetables':timetables_days})
+        # return render(request, 'index.html',{'timetables':timetables_days})
 
 
 
@@ -215,7 +219,7 @@ def timetable_docx(request):
     # data={"department":"Information Technology","rooms":"208/306","semester":"VIII","date":"12-7-23"}
     
     data={}
-    
+
     sem=Sem.objects.get(name='VIII',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
