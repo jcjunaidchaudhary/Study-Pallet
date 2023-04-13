@@ -11,4 +11,8 @@ urlpatterns=[
     path('generate-timetable/',views.timetable,name='generate-timetable'),
     path('generate-timetable/timetable-docx/',views.timetable_docx,name='timetable-docx'),
     path('generate-timetable/timetable-pdf/',views.timetable_pdf,name='timetable-pdf'),
+    path('delete_sem/<int:id>',views.delete_sem,name='delete_sem'),
+    path('delete_course/<int:id>',views.delete_course,name='delete_course'),
+    path('delete_time/<int:id>',views.delete_time,name='delete_time'),
+    path('delete_room/<int:id>',views.delete_room,name='delete_room'),
 ]
