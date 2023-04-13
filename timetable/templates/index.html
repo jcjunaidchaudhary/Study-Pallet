@@ -28,7 +28,7 @@
 
         .container {
             width: 100%;
-            min-sheight: 100%;
+            min-height: 100%;
             padding-top: 10px;
             padding-bottom: 10px;
             background: white;
@@ -162,7 +162,7 @@
                                 <th scope="row">{{idx}}</th>
                                 <td>{{element.name}}</td>
                                 <td>{{element.department}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_sem/{{element.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
@@ -291,7 +291,7 @@
                                 <td>{{element.is_lab}}</td>
                                 <td>{{element.uid}}</td>
                                 <td>{{element.faculty}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_course/{{element.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
@@ -350,7 +350,7 @@
                                 <th scope="row">{{idx}}</th>
                                 <td>{{element.start}}</td>
                                 <td>{{element.end}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_time/{{element.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
@@ -406,7 +406,7 @@
                                 <th scope="row">{{idx}}</th>
                                 <td>{{element.name}}</td>
                                 <td>{{element.is_lab}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_rooms/{{elemet.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
