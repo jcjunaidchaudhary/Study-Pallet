@@ -41,7 +41,8 @@ def timetable(request):
     if request.method == 'POST':
         timetables = [] 
         sem=request.POST.get('sem','')
-        sem=Sem.objects.get(name=sem)
+        department=request.POST.get('department','')
+        sem=Sem.objects.filter(name=sem,department=department).first()
         k=request.POST.get('number')
 
         print(k)
@@ -165,7 +166,8 @@ def course(request):
         uid=request.POST.get('uid','')
         faculty=request.POST.get('faculty','')
         sem=request.POST.get('sem','')
-        sem=Sem.objects.get(name=sem)
+        department=request.POST.get('department','')
+        sem=Sem.objects.get(name=sem,department=department)
         course=Course(code=code,name=name,teaching_hour=teaching_hour,is_lab=is_lab,uid=uid,faculty=faculty,sem_id=sem.id)
         course.save()
 
@@ -257,3 +259,9 @@ def timetable_pdf(request):
 
     
 
+def delete_course(request,id):
+
+    course=Course.objects.get(id)
+    course.delete()
+    course.save()
+    return redirect('home')
