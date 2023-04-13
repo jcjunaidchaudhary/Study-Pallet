@@ -470,7 +470,7 @@
                 <div class="box_contain">
 
                     {% for timetable in timetables %}
-                    <h2>TimeTable</h2>
+                    <h2>TimeTable {{forloop.counter}}</h2>
                     <table class="table">
                         <thead>
                             <tr>
@@ -490,7 +490,7 @@
                                 <td>{{i.M}}</td>
                                 <td>{{i.T}}</td>
                                 <td>{{i.W}}</td>
-                                <td>{{i.T}}</td>
+                                <td>{{i.Th}}</td>
                                 <td>{{i.F}}</td>
                             </tr>
                             {% endfor %}
@@ -503,10 +503,10 @@
                                 <button type="submit" class="btn btn-primary" style="width: 70px;margin-bottom:8px;"><i
                                     class="fa fa-download">Word</button></i></a> 
                             </form>  {% endcomment %}
-                            
-                            <a href="{% url 'timetable-docx' %}"><button type="button" class="btn btn-primary" style="width: 70px;margin-bottom:8px;"><i
-                                        class="fa fa-download">Word</button></i></a>  
-                            <a href="{% url 'timetable-pdf' %}"><button type="button" class="btn btn-danger" style="width: 70px;margin-bottom:8px;"><i
+                    
+                            <a href="timetable-docx?data={{timetable}}"><button type="submit" style="width: 70px;margin-bottom:8px;" class="btn btn-primary"><i class="fa fa-download">Word</button></i></a>
+
+                            <a href="timetable-pdf?data={{timetable}}"><button type="button" class="btn btn-danger" style="width: 70px;margin-bottom:8px;"><i
                                         class="fa fa-download">Pdf</button></i></a>
                         </div>
                         {% comment %} <button type="button" class="btn btn-primary" style="margin-bottom:8px">Word</button>

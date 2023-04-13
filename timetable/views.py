@@ -1,4 +1,4 @@
-import os
+
 from django.shortcuts import redirect, render
 from django.http  import  HttpResponse
 import random 
@@ -23,6 +23,8 @@ def index(request):
 
     rooms=Room.objects.all()
     rooms_idx=zip(rooms, range(1, len(rooms)+1))
+
+    # timetables=request.GET.get('timetables')
 
     time=[]
         # number_of_slots=int(input("Enter number of slots"))
@@ -132,10 +134,14 @@ def timetable(request):
             
         
         timetables_days=convert_days(timetables,time)
-        # data={'timetables':timetables_days,'time_slotS':time}
-        # return redirect(f'home?{data}')
         
-        return render(request, 'index.html',{'timetables':timetables_days,'time_slotS':time})
+        # data={'timetables':timetables_days}
+        # query_params = '&'.join([f'{key}={value}' for key, value in data.items()])
+        # print(query_params)
+        # return redirect(f'/timetable?{query_params}')
+
+        
+        return render(request, 'index.html',{'timetables':timetables_days})
 
 
 
@@ -197,15 +203,18 @@ def time(request):
 
 def timetable_docx(request):
 
-    # data1=request.POST.getlist('data')
-    # print(">>>>>>>>>>>>",data1)
+
+    timetable=request.GET.get('data')
+    timetable=eval(timetable)
+
     # sem=request.POST.get('sem')
 
-    timetable=[{'time': '9.00am-10.00am  ', 'M': 'BC g VB / CC g ZM', 'T': '--', 'W': 'CCS L ZM', 'Th': '--', 'F': '--'}, {'time': '10.00am-11.00am  ', 'M': 'BDLT L VB', 'T': 'BDLT L VB', 'W': 'EM L AW', 'Th': '--', 'F': 'BC g VB / CC g ZM'}, {'time': '11.00am-12.00am', 'M': 'BDA L AS', 'T': 'BC g VB / CC g ZM', 
-    'W': '--', 'Th': 'BDA L AS', 'F': 'BDA L AS'}, {'time': '12.00am-1.00am  ', 'M': '--', 'T': '--', 'W': '--', 'Th': '--', 'F': '--'}, {'time': '2.00am-3.00am  ', 'M': '--', 'T': 'EM L AW', 'W': '--', 'Th': 'CCS L ZM', 'F': 'CCS L ZM'}, {'time': '3.00am-4.00am  ', 'M': 'EM L AW', 'T': 'CCS L ZM', 'W': 'BDLT L VB', 'Th': 'EM L AW', 'F': '--'}]
+    # timetable=[{'time': '9.00am-10.00am  ', 'M': 'BC g VB / CC g ZM', 'T': '--', 'W': 'CCS L ZM', 'Th': '--', 'F': '--'}, {'time': '10.00am-11.00am  ', 'M': 'BDLT L VB', 'T': 'BDLT L VB', 'W': 'EM L AW', 'Th': '--', 'F': 'BC g VB / CC g ZM'}, {'time': '11.00am-12.00am', 'M': 'BDA L AS', 'T': 'BC g VB / CC g ZM', 
+    # 'W': '--', 'Th': 'BDA L AS', 'F': 'BDA L AS'}, {'time': '12.00am-1.00am  ', 'M': '--', 'T': '--', 'W': '--', 'Th': '--', 'F': '--'}, {'time': '2.00am-3.00am  ', 'M': '--', 'T': 'EM L AW', 'W': '--', 'Th': 'CCS L ZM', 'F': 'CCS L ZM'}, {'time': '3.00am-4.00am  ', 'M': 'EM L AW', 'T': 'CCS L ZM', 'W': 'BDLT L VB', 'Th': 'EM L AW', 'F': '--'}]
 
-    data={}
     # data={"department":"Information Technology","rooms":"208/306","semester":"VIII","date":"12-7-23"}
+    
+    data={}
     
     sem=Sem.objects.get(name='VIII',department='Information Technology')
     current_date = date.today()
@@ -229,10 +238,9 @@ def timetable_docx(request):
         return response
 
 def timetable_pdf(request):
-    timetable=[{'time': '9.00am-10.00am  ', 'M': 'BC g VB / CC g ZM', 'T': '--', 'W': 'CCS L ZM', 'Th': '--', 'F': '--'}, {'time': '10.00am-11.00am  ', 'M': 'BDLT L VB', 'T': 'BDLT L VB', 'W': 'EM L AW', 'Th': '--', 'F': 'BC g VB / CC g ZM'}, {'time': '11.00am-12.00am', 'M': 'BDA L AS', 'T': 'BC g VB / CC g ZM', 
-    'W': '--', 'Th': 'BDA L AS', 'F': 'BDA L AS'}, {'time': '12.00am-1.00am  ', 'M': '--', 'T': '--', 'W': '--', 'Th': '--', 'F': '--'}, {'time': '2.00am-3.00am  ', 'M': '--', 'T': 'EM L AW', 'W': '--', 'Th': 'CCS L ZM', 'F': 'CCS L ZM'}, {'time': '3.00am-4.00am  ', 'M': 'EM L AW', 'T': 'CCS L ZM', 'W': 'BDLT L VB', 'Th': 'EM L AW', 'F': '--'}]
 
-    # data={"department":"Information Technology","rooms":"208/306","semester":"VII","date":"12-7-23"}
+    timetable=request.GET.get('data')
+    timetable=eval(timetable)
 
     data={}
     
