@@ -260,8 +260,22 @@ def timetable_pdf(request):
     
 
 def delete_course(request,id):
-
-    course=Course.objects.get(id)
+    course=Course.objects.get(id=id)
     course.delete()
-    course.save()
     return redirect('home')
+
+def delete_room(request,id):
+    del_room=Room.objects.get(id=id)
+    del_room.delete()
+    return redirect('home')
+
+def delete_sem(request,id):
+    del_room=Sem.objects.get(id=id)
+    del_room.delete()
+    return redirect('home')
+
+def delete_time_slot(request,id):
+    del_room=Time.objects.get(id=id)
+    del_room.delete()
+    return redirect('home')
+    

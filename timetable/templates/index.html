@@ -28,7 +28,7 @@
 
         .container {
             width: 100%;
-            min-sheight: 100%;
+            min-height: 100%;
             padding-top: 10px;
             padding-bottom: 10px;
             background: white;
@@ -104,39 +104,19 @@
                         <div class="box">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <label class="input-group-text" for="inputGroupSelect01">Semester</label>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Semester Number</span>
                                 </div>
-                                <select class="custom-select" name="name" id="inputGroupSelect01">
-                                  <option selected>Choose...</option>
-                                  <option value="I">I</option>
-                                  <option value="II">II</option>
-                                  <option value="III">III</option>
-                                  <option value="IV">IV</option>
-                                  <option value="V">V</option>
-                                  <option value="VI">VI</option>
-                                  <option value="VII">VII</option>
-                                  <option value="VIII">VIII</option>
-                                </select>
-                              </div>
+                                <input type="text" name="name" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
 
-
-                              <div class="input-group mb-3">
+                            <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <label class="input-group-text" for="inputGroupSelect01">Department Name</label>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Department Name</span>
                                 </div>
-                                <select class="custom-select" name="department" id="inputGroupSelect01">
-                                  <option selected>Choose...</option>
-                                  <option value="Information Technology">Information Technology</option>
-                                  <option value="Computer Engineering">Computer Engineering</option>
-                                  <option value="Information Technology">Information Technology</option>
-                                  <option value="Electronics and Telecommunication Engineering">Electronics and Telecommunication Engineering</option>
-                                  <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                  <option value="Civil Engineering">Civil Engineering</option>
-                                  <option value="Electrical Engineering">Electrical Engineering</option>
-                                </select>
-                              </div>
-
-                    
+                                <input type="text" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default" name="department">
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-success">Success</button>
@@ -162,7 +142,7 @@
                                 <th scope="row">{{idx}}</th>
                                 <td>{{element.name}}</td>
                                 <td>{{element.department}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_sem/{{element.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
@@ -218,36 +198,11 @@
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <label class="input-group-text" for="inputGroupSelect01">Department Name</label>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Semester</span>
                                 </div>
-                                <select class="custom-select" name="department" id="inputGroupSelect01">
-                                  <option selected>Choose...</option>
-                                  <option value="Information Technology">Information Technology</option>
-                                  <option value="Computer Engineering">Computer Engineering</option>
-                                  <option value="Information Technology">Information Technology</option>
-                                  <option value="Electronics and Telecommunication Engineering">Electronics and Telecommunication Engineering</option>
-                                  <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                  <option value="Civil Engineering">Civil Engineering</option>
-                                  <option value="Electrical Engineering">Electrical Engineering</option>
-                                </select>
-                              </div>  
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <label class="input-group-text" for="inputGroupSelect01">Semester</label>
-                                </div>
-                                <select class="custom-select" name="sem" id="inputGroupSelect01">
-                                  <option selected>Choose...</option>
-                                  <option value="I">I</option>
-                                  <option value="II">II</option>
-                                  <option value="III">III</option>
-                                  <option value="IV">IV</option>
-                                  <option value="V">V</option>
-                                  <option value="VI">VI</option>
-                                  <option value="VII">VII</option>
-                                  <option value="VIII">VIII</option>
-                                </select>
-                              </div>
+                                <input type="text" name="sem" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
                             <div class="form-group row input_box">
                                 <div class="col-sm-4">
                                     <div class="form-check">
@@ -291,7 +246,7 @@
                                 <td>{{element.is_lab}}</td>
                                 <td>{{element.uid}}</td>
                                 <td>{{element.faculty}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_course/{{element.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
@@ -350,7 +305,7 @@
                                 <th scope="row">{{idx}}</th>
                                 <td>{{element.start}}</td>
                                 <td>{{element.end}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_time/{{element.id}}"><button type="button" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
 
@@ -406,9 +361,10 @@
                                 <th scope="row">{{idx}}</th>
                                 <td>{{element.name}}</td>
                                 <td>{{element.is_lab}}</td>
-                                <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                <td><a href="delete_room/{{element.id}}"><button type="submit" class="btn btn-danger">Delete</button></a></td>
                             </tr>
                             {% endfor %}
+
 
 
                         </tbody>
@@ -429,36 +385,12 @@
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                  <label class="input-group-text" for="inputGroupSelect01">Department Name</label>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Enter The
+                                        Semester</span>
                                 </div>
-                                <select class="custom-select" name="department" id="inputGroupSelect01">
-                                  <option selected>Choose...</option>
-                                  <option value="Information Technology">Information Technology</option>
-                                  <option value="Computer Engineering">Computer Engineering</option>
-                                  <option value="Information Technology">Information Technology</option>
-                                  <option value="Electronics and Telecommunication Engineering">Electronics and Telecommunication Engineering</option>
-                                  <option value="Mechanical Engineering">Mechanical Engineering</option>
-                                  <option value="Civil Engineering">Civil Engineering</option>
-                                  <option value="Electrical Engineering">Electrical Engineering</option>
-                                </select>
-                              </div>  
-
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                  <label class="input-group-text" for="inputGroupSelect01">Semester</label>
-                                </div>
-                                <select class="custom-select" name="sem" id="inputGroupSelect01">
-                                  <option selected>Choose...</option>
-                                  <option value="I">I</option>
-                                  <option value="II">II</option>
-                                  <option value="III">III</option>
-                                  <option value="IV">IV</option>
-                                  <option value="V">V</option>
-                                  <option value="VI">VI</option>
-                                  <option value="VII">VII</option>
-                                  <option value="VIII">VIII</option>
-                                </select>
-                              </div>  
+                                <input type="text" name="sem" class="form-control" aria-label="Default"
+                                    aria-describedby="inputGroup-sizing-default">
+                            </div>
 
                         </div>
 
@@ -498,19 +430,19 @@
                         <br>
 
                         <div class="text-center">
-                             {% comment %} <form action="timetable-docx/" method="POST"> {% csrf_token %}
+                            <form action="timetable-docx/" method="POST"> {% csrf_token %}
                                 <input type="hidden" name="timetable" value=timetable>
                                 <button type="submit" class="btn btn-primary" style="width: 70px;margin-bottom:8px;"><i
-                                    class="fa fa-download">Word</button></i></a> 
-                            </form>  {% endcomment %}
+                                    class="fa fa-download">Send</button></i></a> 
+                            </form>
                             
-                            <a href="{% url 'timetable-docx' %}"><button type="button" class="btn btn-primary" style="width: 70px;margin-bottom:8px;"><i
+                            <a href="{% url 'timetable-docx'  %}"><button type="button" class="btn btn-primary" style="width: 70px;margin-bottom:8px;"><i
                                         class="fa fa-download">Word</button></i></a>  
-                            <a href="{% url 'timetable-pdf' %}"><button type="button" class="btn btn-danger" style="width: 70px;margin-bottom:8px;"><i
+                            <a href="{% url 'timetable-pdf'  %}"><button type="button" class="btn btn-danger" style="width: 70px;margin-bottom:8px;"><i
                                         class="fa fa-download">Pdf</button></i></a>
                         </div>
-                        {% comment %} <button type="button" class="btn btn-primary" style="margin-bottom:8px">Word</button>
-                        <button type="button" class="btn btn-danger" style="margin-bottom:8px">Pdf</button> {% endcomment %}
+                        <!-- <button type="button" class="btn btn-primary" style="margin-bottom:8px">Word</button>
+                        <button type="button" class="btn btn-danger" style="margin-bottom:8px">Pdf</button> -->
                     </table>
                     <br>
                     {% endfor %}
