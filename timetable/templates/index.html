@@ -504,13 +504,13 @@
                                     class="fa fa-download">Word</button></i></a> 
                             </form>  {% endcomment %}
                     
-                            <a href="timetable-docx?data={{timetable}}"><button type="submit" style="width: 70px;margin-bottom:8px;" class="btn btn-primary"><i class="fa fa-download">Word</button></i></a>
+                            <a href="timetable-docx?data={{timetable}}"><button type="submit" style="width: 70px;margin-bottom:8px; padding-left: 8px;" class="btn btn-primary"><i class="fa fa-download"> Word</button></i></a>
 
                             <a href="timetable-pdf?data={{timetable}}"><button type="button" class="btn btn-danger" style="width: 70px;margin-bottom:8px;"><i
-                                        class="fa fa-download">Pdf</button></i></a>
-
-                            <a href="#sendemailmodal" class="btn btn-secondary btn-sm mx-1"
-                                        data-toggle="modal">Send Email</a>            
+                                        class="fa fa-file-pdf-o"> Pdf</button></i></a>
+                            <a href="#sendemailmodal" data-toggle="modal"><button type="button" class="btn btn-info" style="width: 76px;margin-bottom:8px; padding-left: 8px;"><i
+                                        class="fa fa-envelope-o"> Email</button></i></a>
+        
                         </div>
                         {% comment %} <button type="button" class="btn btn-primary" style="margin-bottom:8px">Word</button>
                         <button type="button" class="btn btn-danger" style="margin-bottom:8px">Pdf</button> {% endcomment %}
@@ -527,7 +527,6 @@
     </div>
 
         <!-- Modal for send message -->
-        {% comment %} {% for i in med %} {% endcomment %}
         <div class="modal fade" id="sendemailmodal" tabindex="-1" aria-labelledby="updateModal"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -544,8 +543,7 @@
 
                             <div class="mb-3">
                                 {% comment %} <h5>From: {{emailfrom}} </h5> <br> {% endcomment %}
-                                <h5>From: </h5> <br>
-
+                        
                                 {% comment %} <h5><label for="exampleFormControlInput1" class="form-label">To: {{i.email}}</label> {% endcomment %}
                                 <h5><label for="exampleFormControlInput1" class="form-label">To:</label>
                                 </h5>

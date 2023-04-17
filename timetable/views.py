@@ -223,7 +223,7 @@ def timetable_docx(request):
     
     data={}
 
-    sem=Sem.objects.get(name='II',department='Information Technology')
+    sem=Sem.objects.get(name='VIII',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
 
@@ -251,7 +251,7 @@ def timetable_pdf(request):
 
     data={}
     
-    sem=Sem.objects.get(name='II',department='Information Technology')
+    sem=Sem.objects.get(name='VIII',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
 
@@ -299,20 +299,14 @@ def sendMessage(request):
     # med=MedicalStudents.objects.get(id=id)
     # print('med',med)
     emailfrom=settings.EMAIL_HOST_USER
-    # emailfrom='shaikhminhaj8850@gmail.com'
-    print(settings.EMAIL_HOST_USER,'password',settings.EMAIL_HOST_PASSWORD)  
     if request.method == "POST":
         # print(request.POST)
         emailfrom=settings.EMAIL_HOST_USER
         print('post user',emailfrom)
         # recipient_list=[med.email]
         recipient_list = request.POST.get("email")
-        # re=recipient_list.split()
+        recipient_list=recipient_list.split()
         # getdata = request.POST.get['email']
-        # print(getdata)
-        # email_list=getdata.split(',')
-        # print('email_list',email_list)
-        # print(type(recipient_list),recipient_list,re)
         subject = request.POST.get("subject")  
         message=request.POST.get("message")
         print('message',message,subject)
