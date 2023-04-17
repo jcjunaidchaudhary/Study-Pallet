@@ -71,4 +71,13 @@ class Social_Profile(models.Model):
     def __str__(self):
         return f'{self.user}'
 
+
+class Profile(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    upload=models.ImageField(upload_to='profile', null=True ,blank=True)
+    
+    
+class BackImage(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
+    back_image=models.ImageField(upload_to='back_image',null=True,blank=True)
         

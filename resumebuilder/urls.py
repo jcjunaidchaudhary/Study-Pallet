@@ -24,5 +24,7 @@ urlpatterns = [
     path('erase/<int:id>',views.erase,name='destructor'),
     path('generate/',views.Resume,name='resume'),
     path('download/',views.downloaddocx,name='download'),
+    path('backimage/',views.backimage,name='backimage'),
+    path('uploadimage/',views.uploadimage,name='uploadimage'),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
