@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from resumebuilder.models import PersonalInformation,WorkExperience,Educations,Projects,additionalinfo,Social_Profile
+from resumebuilder.models import PersonalInformation,WorkExperience,Educations,Projects,additionalinfo,Social_Profile,BackImage,Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
@@ -289,13 +289,15 @@ def updatesocialprofile(request,id):
 def viewprofile(request):
     try:
         user=request.user.id
+        backimage=BackImage.objects.filter(user_id=user).order_by('-id').first()
+        profile=Profile.objects.filter(user_id=user).order_by('-id').first()
         personalinformation=PersonalInformation.objects.get(user_id=user)
         workexperience=WorkExperience.objects.filter(user_id=user).order_by("-id")
         eduction=Educations.objects.filter(user_id=user).order_by("-id")
         project=Projects.objects.filter(user_id=user).order_by("-id")
         additional=additionalinfo.objects.filter(user_id=user).order_by("-id")
         social=Social_Profile.objects.filter(user_id=user).order_by("-id")
-        return render(request,'resumebuilder/index.html',{'personal':personalinformation,'work':workexperience,'educ':eduction,'proj':project,'additi':additional,'social':social})
+        return render(request,'resumebuilder/index.html',{'personal':personalinformation,'work':workexperience,'educ':eduction,'proj':project,'additi':additional,'social':social,'backimage':backimage,'profile':profile})
     except:
         return render(request,'resumebuilder/index.html')
 
@@ -382,5 +384,25 @@ def downloaddocx(request):
     except:
         messages.error(request,"{} Please Generate Resume".format(user))
         return redirect('viewprofile') 
+    
+    
+def backimage(request):
+    if request.method == 'POST':
+        user=request.user
+        back_image=request.FILES['files']
+        obj=BackImage(user=user,back_image=back_image)
+        obj.save()
+        return redirect('viewprofile')
+    return render(request,'resumebuilder/index.html')
 
   
+def uploadimage(request):
+    if request.method == 'POST':
+        user=request.user
+        uploaded_file = request.FILES['file']
+        obj=Profile(user=user,upload=uploaded_file)
+        obj.save()
+        # messages.success(request,'Profile Save Successfully')
+        return redirect('viewprofile')
+    return render(request,'resumebuilder/index.html')
+    # do something with the uploaded file

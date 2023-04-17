@@ -49,17 +49,6 @@
             position: relative;
         }
 
-        .camera {
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background-image: url('https://tse2.mm.bing.net/th?id=OIP.GY2pOe-LZ5UrZb665jhVxAHaHa&pid=Api&P=0');
-            background-size: cover;
-        }
-
         .username {
             border-radius: 0px 0px 15px 15px;
             background-color: whitesmoke;
@@ -148,6 +137,64 @@
             overflow-y: scroll;
             overflow-x: hidden;
         }
+        .user-img1{
+            height: 130px;
+            margin: 7px;
+        }
+        #uploadbtns{
+            position:absolute;
+            height:30px;
+            width:30px;
+            padding:3px 6px;
+            border-radius: 50%;
+            cursor: pointer;
+            color:#FFF;
+            transform: translateX(-100%);
+            margin-top:95px;
+            background-color:rgb(173,172,172,0.801);
+        }
+        #files{
+            display:None;
+        }
+        .camera {
+            position: absolute;
+            top: -70px;
+            right: 30px;
+        }
+        .img1{
+            width: 100%;
+            height: 100%;
+            border-radius:10px;
+        }
+        .user-img1{
+            height: 130px;
+            margin: 7px;
+        }
+        .user-img{
+            width:130px;
+            height:130px;
+            border-radius: 50%;
+            justify-content:center;
+            align-items:center;
+            position:absolute;
+            right:85%;
+            top: 20%;
+        }
+        #file{
+            display:None;
+        }
+        #uploadbtn{
+            position:absolute;
+            height:30px;
+            width:30px;
+            padding:3px 6px;
+            border-radius: 50%;
+            cursor: pointer;
+            color:#FFF;
+            transform: translateX(-100%);
+            margin-top:95px;
+            background-color:rgb(173,172,172,0.801);
+        }
     </style>
 </head>
 
@@ -159,8 +206,11 @@
                 <h1>{{user.first_name}}</h1>
             </div>
             <div class="icon">
+                {% if profile %}
+                <img src="media/{{profile.upload}}" alt="">
+                {% else %}
                 <img src="{% static 'images/icon.jpg' %}" alt="">
-                
+                {% endif %}
                     <a href="{% url 'dashboard' %}">
                         <li style="margin-top: 30px;">Back</li>
                     </a>
@@ -187,8 +237,21 @@
     <div class="container-lg mx-5">
         <section class="section1">
             <div class="coverpage">
-                <div class="camera">
+                {% if backimage %}
+                <div class="user-img1">
+                    <img class="img1" src="media/{{backimage.back_image}}">
                 </div>
+                {% else %}
+                <div class="user-img1">
+                    <img class="img1" src="{% static 'images/back.jpg' %}">
+                </div>
+                {% endif %}
+                <form action="{% url 'backimage' %}" id="upload-forms" method="POST" enctype="multipart/form-data"> {% csrf_token %} 
+                    <div class="camera">
+                        <input type="file" id="files" name="files" accept="image/png, image/gif, image/jpeg" onchange="document.getElementById('upload-forms').submit();">
+                        <label for="files" id="uploadbtns"><i class="fa fa-camera"></i></label>
+                    </div>
+                </form>
             </div>
             <div class="username">
                 <div>
@@ -413,9 +476,18 @@
                     </div>
                 </div>
             </div>
-            <div class="image">
-                <img src="{% static 'images/icon.jpg' %}" alt="">
-            </div>
+            <form action="{% url 'uploadimage' %}" method="POST" id="upload-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="user-img">
+                    {% if profile %}
+                    <img src="media/{{profile.upload}}" id='photo'>
+                    {% else %}
+                    <img src="{% static 'images/icon.jpg' %}" id='photo'>
+                    {% endif %}
+                  <input type="file" id="file" name="file" accept="image/png, image/gif, image/jpeg" onchange="document.getElementById('upload-form').submit();">
+                  <label for="file" id="uploadbtn"><i class="fa fa-camera"></i></label>
+                </div>
+            </form>
         </section>
 
 
