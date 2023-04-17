@@ -9,6 +9,9 @@ from timetable.service import am_pm, convert_days, generate_docx
 from django.core.files.storage import FileSystemStorage
 from docx2pdf import convert
 from datetime import date
+from django.core.mail import EmailMessage, get_connection,send_mail
+
+from django.conf import settings
 
 # Create your views here.
 
@@ -220,7 +223,7 @@ def timetable_docx(request):
     
     data={}
 
-    sem=Sem.objects.get(name='VIII',department='Information Technology')
+    sem=Sem.objects.get(name='II',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
 
@@ -248,7 +251,7 @@ def timetable_pdf(request):
 
     data={}
     
-    sem=Sem.objects.get(name='VIII',department='Information Technology')
+    sem=Sem.objects.get(name='II',department='Information Technology')
     current_date = date.today()
     rooms=Room.objects.filter(is_lab=False)
 
@@ -289,5 +292,31 @@ def delete_room(request,id):
 def delete_time(request,id):
     time = Time.objects.get(id=id)
     time.delete()
+    return redirect('home')
+
+def sendMessage(request):
+    print('send message')
+    # med=MedicalStudents.objects.get(id=id)
+    # print('med',med)
+    emailfrom=settings.EMAIL_HOST_USER
+    # emailfrom='shaikhminhaj8850@gmail.com'
+    print(settings.EMAIL_HOST_USER,'password',settings.EMAIL_HOST_PASSWORD)  
+    if request.method == "POST":
+        # print(request.POST)
+        emailfrom=settings.EMAIL_HOST_USER
+        print('post user',emailfrom)
+        # recipient_list=[med.email]
+        recipient_list = request.POST.get("email")
+        # re=recipient_list.split()
+        # getdata = request.POST.get['email']
+        # print(getdata)
+        # email_list=getdata.split(',')
+        # print('email_list',email_list)
+        # print(type(recipient_list),recipient_list,re)
+        subject = request.POST.get("subject")  
+        message=request.POST.get("message")
+        print('message',message,subject)
+        send_mail(subject,message,emailfrom,recipient_list)
+    # return HttpResponse("Email send")    
     return redirect('home')
 
