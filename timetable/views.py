@@ -234,7 +234,7 @@ def timetable_docx(request):
    
     generate_docx(timetable,data)
 
-    docx=f"{data.get('semester')}.docx"
+    docx=f"{data.get('semester')}-{data.get('department')}.docx"
 
     fs = FileSystemStorage()
     filename = str(docx)
@@ -262,10 +262,10 @@ def timetable_pdf(request):
 
     generate_docx(timetable,data)
 
-    convert(f"media/{data.get('semester')}.docx")
+    convert(f"media/{data.get('semester')}-{data.get('department')}.docx")
 
     fs = FileSystemStorage()
-    filename = str(f"{data.get('semester')}.pdf")
+    filename = str(f"{data.get('semester')}-{data.get('department')}.pdf")
     with fs.open(filename) as pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename) 
@@ -295,22 +295,17 @@ def delete_time(request,id):
     return redirect('home')
 
 def sendMessage(request):
-    print('send message')
-    # med=MedicalStudents.objects.get(id=id)
-    # print('med',med)
-    emailfrom=settings.EMAIL_HOST_USER
     if request.method == "POST":
-        # print(request.POST)
+        data={"department":"Information Technology","rooms":"208/306","semester":"VIII"}
         emailfrom=settings.EMAIL_HOST_USER
-        print('post user',emailfrom)
-        # recipient_list=[med.email]
         recipient_list = request.POST.get("email")
         recipient_list=recipient_list.split()
-        # getdata = request.POST.get['email']
         subject = request.POST.get("subject")  
         message=request.POST.get("message")
-        print('message',message,subject)
-        send_mail(subject,message,emailfrom,recipient_list)
+        msg = EmailMessage(subject, message,emailfrom,recipient_list)
+        msg.attach_file(f"media/{data.get('semester')}-{data.get('department')}.docx")
+        msg.send()
+        # send_mail(subject,message,emailfrom,recipient_list)
     # return HttpResponse("Email send")    
     return redirect('home')
 

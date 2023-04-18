@@ -107,6 +107,6 @@ def generate_docx(timetable,data):
     # Create a new directory because it does not exist
         os.makedirs(path)
 
-    document.save(f"media/{data.get('semester')}.docx")
+    document.save(f"media/{data.get('semester')}-{data.get('department')}.docx")
     
 
